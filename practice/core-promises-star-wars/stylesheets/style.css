@@ -9,11 +9,12 @@ body * {
 }
 
 body {
-  background-color: #E2E3E5;
-  min-height: 100vh;
-  max-height: 100vh;
+  height: 100vh;
+  width: 100%;
   overflow-y: hidden;
-  background-image: url(../images/at-st.jpg);
+  background-image: url(../images/bg.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 ul>li>ul>li {
@@ -22,6 +23,7 @@ ul>li>ul>li {
 
 .search {
   display: flex;
+  
 }
 
 #content {
