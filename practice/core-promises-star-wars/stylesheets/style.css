@@ -21,9 +21,14 @@ ul>li>ul>li {
   margin-left: 30px;
 }
 
+.or-title {
+  margin: 20px 0 40px 0 !important;
+  text-align: center;
+  color: #FFE81F;
+}
+
 .search {
   display: flex;
-  
 }
 
 #content {
@@ -31,6 +36,10 @@ ul>li>ul>li {
   min-height: 35vh;
   overflow-x: auto;
   overflow-y: auto;
+}
+
+.primary {
+  padding-top: 0;
 }
 
 #result-container {
@@ -48,6 +57,7 @@ ul>li>ul>li {
   -webkit-animation: spin 1s linear infinite;
   -moz-animation: spin 1s linear infinite;
   animation: spin 1s linear infinite;
+  z-index: 1;
 }
 
 @-moz-keyframes spin {

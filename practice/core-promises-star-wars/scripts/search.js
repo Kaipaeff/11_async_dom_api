@@ -14,6 +14,8 @@ const resultContainer = document.querySelector('#result-container');
 const content = document.querySelector('#content');
 const loader = document.querySelector('.spinner');
 const deleteButton = document.querySelector('.delete');
+const select = document.querySelector('.select');
+
 
 
 function isLoading(visible) {
@@ -24,28 +26,61 @@ function resultContainerVisible(visible) {
   resultContainer.style.visibility = visible ? 'visible' : 'hidden';
 }
 
-function updateResult(data) {
+
+async function updateResult(data) {
   content.innerHTML = '';
 
-  data.results.forEach(character => {
-    const characterElement = document.createElement('p');
-    characterElement.textContent = character.name;
-    content.appendChild(characterElement);
+  if (!data.results.length) {
+    content.innerText = 'Запрашиваемый объект отсутствует в указанном разделе';
     resultContainerVisible(true);
-  });
+    return;
+  }
+
+  for (const character of data.results) {
+    if (character.homeworld) {
+      try {
+        const planetData = await starWars.getPlanetsById(character.homeworld.split('/').slice(-2, -1).pop());
+        character.homeworld = planetData.name;
+      } catch (error) {
+        console.error('Error fetching planet data:', error);
+      }
+    }
+
+    let characterInfo = '';
+    for (const key in character) {
+      characterInfo += `<p>${key}: ${character[key]}</p>`;
+    }
+    content.innerHTML = characterInfo;
+  }
+  resultContainerVisible(true);
 }
 
 
 async function performSearch() {
   const query = input.value;
+  const selectedOption = select.options[select.selectedIndex].value;
 
   try {
     isLoading(true);
     await new Promise(resolve => setTimeout(resolve, 1000));
-    const searchResult = await starWars.searchCharacters(query);
+
+    let searchResult;
+    switch (selectedOption) {
+      case 'people':
+        searchResult = await starWars.searchCharacters(query);
+        break;
+      case 'planets':
+        searchResult = await starWars.searchPlanets(query);
+        break;
+      case 'species':
+        searchResult = await starWars.searchSpecies(query);
+        break;
+    }
+
     updateResult(searchResult);
+    console.log('searchResult:', searchResult);
   } catch (error) {
-    console.error('Error searching:', error);
+    console.error(error);
   } finally {
     isLoading(false);
   }
@@ -53,22 +88,17 @@ async function performSearch() {
 
 
 function handleSearch(event) {
-  if (input.value) {
-    if (
-      (event.type === 'click' && event.target === searchButton) ||
-      (event.type === 'keydown' && event.key === 'Enter')) {
-      performSearch();
-    }
+  if (input.value &&
+    ((event.type === 'click' && event.target === searchButton) ||
+      (event.type === 'keydown' && event.key === 'Enter'))) {
+    performSearch();
   }
 }
 
 searchButton.addEventListener('click', handleSearch);
 document.addEventListener('keydown', handleSearch);
 
-
-function handleDelete() {
+deleteButton.addEventListener('click', () => {
   content.innerHTML = '';
   resultContainerVisible(false);
-}
-
-deleteButton.addEventListener('click', handleDelete)
+})
