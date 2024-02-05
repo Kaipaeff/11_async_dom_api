@@ -27,6 +27,12 @@ ul>li>ul>li {
   color: #FFE81F;
 }
 
+.message-body-title,
+.message-body-subtitle,
+.message-body-info {
+  margin-bottom: 15px;
+}
+
 .search {
   display: flex;
 }

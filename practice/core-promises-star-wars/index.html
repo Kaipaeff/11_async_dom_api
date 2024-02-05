@@ -34,13 +34,13 @@
     <section class="section primary">
       <div class="column is-half is-offset-3">
         <div id="byQueryBlock" class="search">
-          <select class="is-large select">
+          <select class="is-large select select-name-input">
             <option value="people">people</option>
             <option value="planets">planets</option>
             <option value="species">species</option>
           </select>
-          <input class="is-large input" type="text" placeholder="Search..." autofocus>
-          <button id="byQueryBtn" class="is-large button">Search</button>
+          <input class="is-large input name-input" type="text" placeholder="Search..." autofocus>
+          <button id="byQueryBtn" class="is-large button">search</button>
         </div>
       </div>
 
@@ -48,14 +48,14 @@
 
       <div class="column is-half is-offset-3">
         <div id="byIdBlock" class="search">
-          <select class="is-large select">
-            <option>people</option>
-            <option>planets</option>
-            <option>species</option>
-            <option>films</option>
+          <select class="is-large select select-id-input">
+            <option value="people">people</option>
+            <option value="planets">planets</option>
+            <option value="species">species</option>
+            <option value="films">films</option>
           </select>
-          <input class="is-large input" type="text" placeholder="Search..." autofocus>
-          <button id="byQueryBtn" class="is-large button">get by id</button>
+          <input class="is-large input id-input" type="text" placeholder="Search...">
+          <button id="byIdBtn" class="is-large button">get by id</button>
         </div>
       </div>
     </section>
@@ -69,7 +69,7 @@
       <div id="result-container" class="column is-5 is-offset-3">
         <article class="message is-dark">
           <div class="message-header">
-            <p>Primary</p>
+            <p class="message-header-title"></p>
             <button class="delete" aria-label="delete"></button>
           </div>
           <div id="content" class="message-body">
