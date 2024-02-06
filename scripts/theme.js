@@ -23,7 +23,7 @@ function updateButtonText(theme) {
 }
 
 function updateSpinnerImage(theme) {
-  spinnerImage.src = theme === 'light-theme' ? '/images/yoda.png' : '/images/dvv.webp';
+  spinnerImage.src = theme === 'light-theme' ? 'images/yoda.png' : 'images/dvv.webp';
 }
 
 
