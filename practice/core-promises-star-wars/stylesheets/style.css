@@ -37,6 +37,22 @@ ul>li>ul>li {
   display: flex;
 }
 
+.select {
+  border-color: #dbdbdb;
+  background-color: white;
+  border-radius: 4px;
+  margin-right: 3px;
+}
+
+.query-input,
+.id-input {
+  margin-right: 3px;
+}
+
+.select:focus {
+  outline: 3px solid #2b6bff5c;
+}
+
 #byQueryBlock,
 #byIdBlock {
   position: relative;
