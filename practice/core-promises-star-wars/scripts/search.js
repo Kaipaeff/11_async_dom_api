@@ -32,7 +32,7 @@ async function updateResult(data) {
   if (!Array.isArray(data.results)) {
     data.results = [data.results];
   } else if (!data.results.length) {
-    content.innerText = 'Object not found in the selected section';
+    content.innerText = `${queryInput.value} not found in the selected section`;
     resultContainerVisible(true);
     headerTitle.textContent = 'Not found';
     return;
