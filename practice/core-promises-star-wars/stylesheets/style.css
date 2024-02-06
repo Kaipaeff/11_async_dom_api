@@ -37,6 +37,24 @@ ul>li>ul>li {
   display: flex;
 }
 
+#byQueryBlock,
+#byIdBlock {
+  position: relative;
+}
+
+.clear,
+.clear-id {
+  position: absolute;
+  top: 20px;
+  right: 170px;
+  background-color: black;
+}
+
+.clear-id {
+  right: 204px;
+
+}
+
 #content {
   max-height: 35vh;
   min-height: 35vh;
