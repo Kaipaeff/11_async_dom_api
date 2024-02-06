@@ -34,12 +34,13 @@
     <section class="section primary">
       <div class="column is-half is-offset-3">
         <div id="byQueryBlock" class="search">
-          <select class="is-large select select-name-input">
+          <select class="is-large select select-query-input">
             <option value="people">people</option>
             <option value="planets">planets</option>
             <option value="species">species</option>
           </select>
-          <input class="is-large input name-input" type="text" placeholder="Search..." autofocus>
+          <input class="is-large input query-input" type="text" placeholder="Search..." autofocus>
+          <button id="queryInputClearBtn" class="delete clear" aria-label="delete"></button>
           <button id="byQueryBtn" class="is-large button">search</button>
         </div>
       </div>
@@ -55,6 +56,7 @@
             <option value="films">films</option>
           </select>
           <input class="is-large input id-input" type="text" placeholder="Search...">
+          <button id="idInputClearBtn" class="delete clear-id" aria-label="delete"></button>
           <button id="byIdBtn" class="is-large button">get by id</button>
         </div>
       </div>
@@ -70,7 +72,7 @@
         <article class="message is-dark">
           <div class="message-header">
             <p class="message-header-title"></p>
-            <button class="delete" aria-label="delete"></button>
+            <button id="remove-container" class="delete" aria-label="delete"></button>
           </div>
           <div id="content" class="message-body">
 

@@ -1,16 +1,19 @@
-const selectName = document.querySelector('.select-name-input');
+const selectQuery = document.querySelector('.select-query-input');
 const selectId = document.querySelector('.select-id-input');
 
-const nameInput = document.querySelector('.name-input');
+const queryInput = document.querySelector('.query-input');
 const idInput = document.querySelector('.id-input');
 
-const searchByNameBtn = document.querySelector('#byQueryBtn');
+const searchByQueryBtn = document.querySelector('#byQueryBtn');
 const searchByIdBtn = document.querySelector('#byIdBtn');
-const deleteButton = document.querySelector('.delete');
+
+const queryInputClearBtn = document.querySelector('#queryInputClearBtn');
+const idInputClearBtn = document.querySelector('#idInputClearBtn');
 
 const resultContainer = document.querySelector('#result-container');
 const headerTitle = document.querySelector('.message-header-title');
 const content = document.querySelector('#content');
+const resultContainerRemoveBtn = document.querySelector('#remove-container');
 
 const loader = document.querySelector('.spinner');
 
@@ -26,24 +29,19 @@ function resultContainerVisible(visible) {
 
 async function updateResult(data) {
   content.innerHTML = '';
-
-  const selectedOption = selectId.options[selectId.selectedIndex].value;
-
-  if (Array.isArray(data.results) && !data.results.length) {
+  if (!Array.isArray(data.results)) {
+    data.results = [data.results];
+  } else if (!data.results.length) {
     content.innerText = 'Object not found in the selected section';
     resultContainerVisible(true);
+    headerTitle.textContent = 'Not found';
     return;
   }
 
-  if (!Array.isArray(data.results)) {
-    data.results = [data];
-  }
-
   let characterInfo = '';
-
+  const selectedIdOption = selectId.options[selectId.selectedIndex].value;
   for (const character of data.results) {
-    if (selectedOption === 'films') {
-      characterInfo += `<p class="message-body-title">title: ${character.title}</p>`;
+    if (selectedIdOption === 'films') {
       characterInfo += `<p class="message-body-subtitle">episode: ${character.episode_id}</p>`;
       characterInfo += `<p class="message-body-info">annotation: ${character.opening_crawl}</p>`;
       characterInfo += `<p class="message-body-producer">producer: ${character.producer}</p>`;
@@ -62,6 +60,7 @@ async function updateResult(data) {
       let count = 0;
       for (const key in character) {
         if (count >= 10) break;
+        if (key === 'name') continue;
         characterInfo += `<p>${key}: ${character[key]}</p>`;
         count++;
       }
@@ -73,29 +72,27 @@ async function updateResult(data) {
 }
 
 
-async function searchByName() {
-  const query = nameInput.value;
-  const selectedOption = selectName.options[selectName.selectedIndex].value;
-
+async function searchByQuery() {
   try {
     isLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 800));
 
-    let searchByNameResult;
-    switch (selectedOption) {
+    let searchByQueryResult;
+    const selectedQueryOption = selectQuery.options[selectQuery.selectedIndex].value;
+    const query = queryInput.value;
+    switch (selectedQueryOption) {
       case 'people':
-        searchByNameResult = await starWars.searchCharacters(query);
+        searchByQueryResult = await starWars.searchCharacters(query);
         break;
       case 'planets':
-        searchByNameResult = await starWars.searchPlanets(query);
+        searchByQueryResult = await starWars.searchPlanets(query);
         break;
       case 'species':
-        searchByNameResult = await starWars.searchSpecies(query);
+        searchByQueryResult = await starWars.searchSpecies(query);
         break;
     }
-
-    updateResult(searchByNameResult);
-    // console.log('searchByNameResult:', searchByNameResult);
+    updateResult(searchByQueryResult);
+    // console.log('searchByQueryResult:', searchByQueryResult);
   } catch (error) {
     console.error(error);
   } finally {
@@ -105,15 +102,14 @@ async function searchByName() {
 
 
 async function searchById() {
-  const id = idInput.value;
-  const selectedOption = selectId.options[selectId.selectedIndex].value;
-
   try {
     isLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 800));
 
     let searchByIdResult;
-    switch (selectedOption) {
+    const selectedIdOption = selectId.options[selectId.selectedIndex].value;
+    const id = idInput.value;
+    switch (selectedIdOption) {
       case 'people':
         searchByIdResult = await starWars.getCharactersById(id);
         break;
@@ -127,11 +123,9 @@ async function searchById() {
         searchByIdResult = await starWars.getFilmsById(id);
         break;
     }
-
-    if (!Array.isArray(searchByIdResult) && Object.prototype.toString.call(searchByIdResult) === '[object Object]') {
+    if (Object.prototype.toString.call(searchByIdResult) === '[object Object]') {
       searchByIdResult.results = [searchByIdResult][0];
     }
-
     updateResult(searchByIdResult);
     // console.log('searchByIdResult:', searchByIdResult);
   } catch (error) {
@@ -143,20 +137,23 @@ async function searchById() {
 
 
 function handleSearch(event) {
-  if ((event.type === 'click' && (event.target === searchByNameBtn || event.target === searchByIdBtn)) ||
+  if ((event.type === 'click' && (event.target === searchByQueryBtn || event.target === searchByIdBtn)) ||
     (event.type === 'keydown' && event.key === 'Enter')) {
-    if (event.target === searchByNameBtn && nameInput.value || event.type === 'keydown' && event.key === 'Enter' && nameInput.value) {
-      searchByName();
+    if (event.target === searchByQueryBtn && queryInput.value || event.type === 'keydown' && event.key === 'Enter' && queryInput.value) {
+      searchByQuery();
     } else if (event.target === searchByIdBtn && idInput.value || event.type === 'keydown' && event.key === 'Enter' && idInput.value) {
       searchById();
     }
+  } else if (event.type === 'click' && event.target === resultContainerRemoveBtn) {
+    resultContainerVisible(false);
+  } else if (event.type === 'click' && event.target === queryInputClearBtn && queryInput.value) {
+    queryInput.value = '';
+    resultContainerVisible(false);
+  } else if (event.type === 'click' && event.target === idInputClearBtn && idInput.value) {
+    idInput.value = '';
+    resultContainerVisible(false);
   }
 }
 
 document.addEventListener('click', handleSearch);
 document.addEventListener('keydown', handleSearch);
-
-deleteButton.addEventListener('click', () => {
-  content.innerHTML = '';
-  resultContainerVisible(false);
-})
