@@ -33,8 +33,8 @@ async function updateResult(data) {
     data.results = [data.results];
   } else if (!data.results.length) {
     content.innerText = `${queryInput.value} not found in the selected section`;
-    resultContainerVisible(true);
     headerTitle.textContent = 'Not found';
+    resultContainerVisible(true);
     return;
   }
 
