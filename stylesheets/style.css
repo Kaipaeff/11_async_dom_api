@@ -36,10 +36,11 @@ ul>li>ul>li {
   margin-left: 30px;
 }
 
-.title {
+.main-title {
   margin-left: 30px;
   margin-top: 26px;
-  font-size: 48px;
+  font-size: 72px;
+  font-weight: 500;
 }
 
 .or-title {
